@@ -54,6 +54,7 @@
       <HintPath>packages\MySqlConnector.3.0.0\lib\net471\MySqlConnector.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Buffers, Version=4.0.5.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>packages\System.Buffers.4.6.1\lib\net462\System.Buffers.dll</HintPath>
     </Reference>
@@ -88,6 +89,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\AuthController.cs" />
+    <Compile Include="Controllers\CustomerController.cs" />
+    <Compile Include="Controllers\CustomerManagementController.cs" />
+    <Compile Include="Controllers\OrderController.cs" />
+    <Compile Include="Controllers\SparePartController.cs" />
+    <Compile Include="Controllers\VehicleCompatibilityController.cs" />
+    <Compile Include="Data\AppConfig.cs" />
     <Compile Include="Data\DatabaseInitializer.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
@@ -95,13 +102,45 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Models\CartManager.cs" />
+    <Compile Include="Models\SparePart.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Views\AdminDashboardForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\BrowsePartsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\CartForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\CustomerDashboardForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\CustomerManagementForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Views\LoginForm.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Views\ManageSparePartsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\OrderHistoryForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\OrderManagementForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Views\RegisterForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\SearchByVehicleForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\VehicleCompatibilityForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -113,8 +152,17 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Views\AdminDashboardForm.resx">
+      <DependentUpon>AdminDashboardForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\BrowsePartsForm.resx">
+      <DependentUpon>BrowsePartsForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\LoginForm.resx">
       <DependentUpon>LoginForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\ManageSparePartsForm.resx">
+      <DependentUpon>ManageSparePartsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\RegisterForm.resx">
       <DependentUpon>RegisterForm.cs</DependentUpon>

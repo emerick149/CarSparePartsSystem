@@ -11,24 +11,6 @@ namespace CarSparePartsSystem.Views
         private TextBox txtRegEmail, txtRegPassword;
         private Button btnRegister, btnBackToLogin;
 
-        private void RegisterForm_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void InitializeComponent()
-        {
-            this.SuspendLayout();
-            // 
-            // RegisterForm
-            // 
-            this.ClientSize = new System.Drawing.Size(282, 253);
-            this.Name = "RegisterForm";
-            this.Load += new System.EventHandler(this.RegisterForm_Load);
-            this.ResumeLayout(false);
-
-        }
-
         public RegisterForm()
         {
             InitializeComponents();
@@ -36,67 +18,53 @@ namespace CarSparePartsSystem.Views
 
         private void InitializeComponents()
         {
-            // Form Settings
             this.Text = "Car Spare Parts - Register";
-            this.Size = new Size(450, 380);
+            this.Size = new Size(450, 420);
             this.StartPosition = FormStartPosition.CenterScreen;
             this.FormBorderStyle = FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
 
-            // Title Label
             lblTitle = new Label()
             {
                 Text = "Create Account",
-                Location = new Point(140, 20),
-                Size = new Size(200, 30),
+                Location = new Point(140, 20), Size = new Size(200, 30),
                 Font = new Font("Arial", 14, FontStyle.Bold)
             };
 
-            // Email Label & TextBox
             lblEmail = new Label() { Text = "Email:", Location = new Point(40, 70), Size = new Size(100, 20) };
             txtRegEmail = new TextBox() { Location = new Point(40, 95), Size = new Size(340, 25) };
 
-            // Password Label & TextBox
-            lblPassword = new Label() { Text = "Password:", Location = new Point(40, 130), Size = new Size(100, 20) };
+            lblPassword = new Label() { Text = "Password (max 72 chars):", Location = new Point(40, 130), Size = new Size(200, 20) };
             txtRegPassword = new TextBox()
             {
-                Location = new Point(40, 155),
-                Size = new Size(340, 25),
-                PasswordChar = '*'
+                Location = new Point(40, 155), Size = new Size(340, 25),
+                PasswordChar = '*',
+                MaxLength = 72   // SFR-01: enforce at the UI level too
             };
 
-            // Register Button
             btnRegister = new Button()
             {
                 Text = "Register",
-                Location = new Point(40, 200),
-                Size = new Size(340, 40),
-                BackColor = Color.Green,
-                ForeColor = Color.White,
-                FlatStyle = FlatStyle.Flat
+                Location = new Point(40, 200), Size = new Size(340, 40),
+                BackColor = Color.Green, ForeColor = Color.White, FlatStyle = FlatStyle.Flat
             };
             btnRegister.Click += btnRegister_Click;
 
-            // Back to Login Button
             btnBackToLogin = new Button()
             {
                 Text = "Already have an account? Login",
-                Location = new Point(40, 250),
-                Size = new Size(340, 35)
+                Location = new Point(40, 255), Size = new Size(340, 35)
             };
             btnBackToLogin.Click += btnBackToLogin_Click;
 
-            // Message Label
             lblMessage = new Label()
             {
-                Text = "",
-                Location = new Point(40, 300),
-                Size = new Size(340, 20),
+                Text = "", Location = new Point(40, 305), Size = new Size(340, 40),
                 ForeColor = Color.Red
             };
 
-            // Add all controls to the Form
-            this.Controls.AddRange(new Control[] {
+            this.Controls.AddRange(new Control[]
+            {
                 lblTitle, lblEmail, txtRegEmail, lblPassword, txtRegPassword,
                 btnRegister, btnBackToLogin, lblMessage
             });
@@ -110,9 +78,9 @@ namespace CarSparePartsSystem.Views
 
             if (result == "Success")
             {
-                MessageBox.Show("Registration successful! Please login.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                LoginForm loginForm = new LoginForm();
-                loginForm.Show();
+                MessageBox.Show("Registration successful! Please login.", "Success",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                new LoginForm().Show();
                 this.Close();
             }
             else
@@ -123,8 +91,7 @@ namespace CarSparePartsSystem.Views
 
         private void btnBackToLogin_Click(object sender, EventArgs e)
         {
-            LoginForm loginForm = new LoginForm();
-            loginForm.Show();
+            new LoginForm().Show();
             this.Close();
         }
     }

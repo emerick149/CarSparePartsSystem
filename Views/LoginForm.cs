@@ -5,48 +5,25 @@ using CarSparePartsSystem.Controllers;
 
 namespace CarSparePartsSystem.Views
 {
-    // Notice we removed the "partial" keyword since we deleted the designer file
     public class LoginForm : Form
     {
-        // 1. Declare all UI controls
         private Label lblEmail, lblPassword, lblMessage, lblTitle;
         private TextBox txtEmail, txtPassword;
         private Button btnLogin, btnGoToRegister;
-
-        private void LoginForm_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void InitializeComponent()
-        {
-            this.SuspendLayout();
-            // 
-            // LoginForm
-            // 
-            this.ClientSize = new System.Drawing.Size(282, 253);
-            this.Name = "LoginForm";
-            this.Load += new System.EventHandler(this.LoginForm_Load);
-            this.ResumeLayout(false);
-
-        }
 
         public LoginForm()
         {
             InitializeComponents();
         }
 
-        // 2. Create and arrange the UI controls
         private void InitializeComponents()
         {
-            // Form Settings
             this.Text = "Car Spare Parts - Login";
             this.Size = new Size(450, 380);
             this.StartPosition = FormStartPosition.CenterScreen;
             this.FormBorderStyle = FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
 
-            // Title Label
             lblTitle = new Label()
             {
                 Text = "Welcome Back!",
@@ -55,20 +32,17 @@ namespace CarSparePartsSystem.Views
                 Font = new Font("Arial", 14, FontStyle.Bold)
             };
 
-            // Email Label & TextBox
             lblEmail = new Label() { Text = "Email:", Location = new Point(40, 70), Size = new Size(100, 20) };
             txtEmail = new TextBox() { Location = new Point(40, 95), Size = new Size(340, 25) };
 
-            // Password Label & TextBox
             lblPassword = new Label() { Text = "Password:", Location = new Point(40, 130), Size = new Size(100, 20) };
             txtPassword = new TextBox()
             {
                 Location = new Point(40, 155),
                 Size = new Size(340, 25),
-                PasswordChar = '*' // Hides password with dots
+                PasswordChar = '*'
             };
 
-            // Login Button
             btnLogin = new Button()
             {
                 Text = "Login",
@@ -78,9 +52,8 @@ namespace CarSparePartsSystem.Views
                 ForeColor = Color.White,
                 FlatStyle = FlatStyle.Flat
             };
-            btnLogin.Click += btnLogin_Click; // Attach the click event
+            btnLogin.Click += btnLogin_Click;
 
-            // Register Button
             btnGoToRegister = new Button()
             {
                 Text = "Need an account? Register Here",
@@ -89,7 +62,6 @@ namespace CarSparePartsSystem.Views
             };
             btnGoToRegister.Click += btnGoToRegister_Click;
 
-            // Message Label (for errors)
             lblMessage = new Label()
             {
                 Text = "",
@@ -98,32 +70,44 @@ namespace CarSparePartsSystem.Views
                 ForeColor = Color.Red
             };
 
-            // Add all controls to the Form
             this.Controls.AddRange(new Control[] {
                 lblTitle, lblEmail, txtEmail, lblPassword, txtPassword,
                 btnLogin, btnGoToRegister, lblMessage
             });
         }
 
-        // 3. Button Click Events (The Logic)
         private void btnLogin_Click(object sender, EventArgs e)
         {
-            lblMessage.Text = ""; // Clear previous errors
-            AuthController auth = new AuthController();
-            var user = auth.Login(txtEmail.Text, txtPassword.Text);
-
-            if (user != null)
+            lblMessage.Text = "";
+            try
             {
-                MessageBox.Show($"Login Successful!\nWelcome, {user.Email}\nRole: {user.Role}", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                AuthController auth = new AuthController();
+                var user = auth.Login(txtEmail.Text, txtPassword.Text);
 
-                // TODO: In the next step, we will open the Dashboard here
-                // this.Hide();
-                // DashboardForm dashboard = new DashboardForm(user);
-                // dashboard.Show();
+                if (user == null)
+                {
+                    lblMessage.Text = "Invalid email or password.";
+                    return;
+                }
+
+                Form dashboard;
+                if (string.Equals(user.Role?.Trim(), "Administrator", StringComparison.OrdinalIgnoreCase))
+                {
+                    dashboard = new AdminDashboardForm(user);
+                }
+                else
+                {
+                    dashboard = new CustomerDashboardForm(user);
+                }
+
+                dashboard.FormClosed += (s, args) => this.Close();
+                this.Hide();
+                dashboard.Show();
             }
-            else
+            catch (Exception ex)
             {
-                lblMessage.Text = "Invalid email or password.";
+                lblMessage.Text = "Unable to open dashboard.";
+                MessageBox.Show(ex.Message, "Dashboard Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

@@ -1,4 +1,5 @@
-﻿using CarSparePartsSystem.Models;
+﻿using CarSparePartsSystem.Data;
+using CarSparePartsSystem.Models;
 using MySqlConnector;
 using BCrypt.Net;
 using System;
@@ -8,7 +9,7 @@ namespace CarSparePartsSystem.Controllers
 {
     public class AuthController
     {
-        private readonly string connectionString = "Server=localhost;Database=CarSparePartsDB;User ID=root;Password=;";
+        private readonly string connectionString = AppConfig.ConnectionString;
 
         // SFR-01 & SFR-02: Standardize email (trim spaces, make lowercase)
         private string StandardizeEmail(string email)
@@ -23,6 +24,10 @@ namespace CarSparePartsSystem.Controllers
 
             if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
                 return "Email and Password are required.";
+
+            // SFR-01: Reject passwords longer than 72 characters (BCrypt limit)
+            if (password.Length > 72)
+                return "Password must be 72 characters or fewer.";
 
             // Check if email already exists
             using (var conn = new MySqlConnection(connectionString))
